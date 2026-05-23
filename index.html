@@ -4540,10 +4540,14 @@ $(document).one(&quot;:passageend&quot;, function() {
     opacity: 0;
     animation: endingFadeIn 2s forwards ease-in-out;
     animation-delay: 1.5s;
+    /* 改為彈性布局使輸入框與按鍵完美並排 */
+    display: flex !important;
+    gap: 8px !important;
+    align-items: center !important;
   }
 
   #ghost-input {
-    width: 100%;
+    flex: 1 !important;
     box-sizing: border-box;
     padding: 14px 16px !important;
     background-color: #0d0d0d !important;
@@ -4567,6 +4571,31 @@ $(document).one(&quot;:passageend&quot;, function() {
     color: #555555 !important;
     opacity: 1 !important;
     text-align: left !important;
+  }
+
+  /* 新增的手機優化送出按鍵樣式 */
+  #ghost-submit-btn {
+    padding: 14px 20px !important;
+    background-color: #1a1a1a !important;
+    border: 1px solid #2a2a2a !important;
+    color: #FFFFFF !important;
+    font-size: 15px !important;
+    font-weight: bold !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    white-space: nowrap !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
+  }
+  
+  #ghost-submit-btn:hover:not(:disabled) {
+    background-color: #333333 !important;
+    border-color: #555555 !important;
+  }
+
+  #ghost-submit-btn:disabled {
+    opacity: 0.4 !important;
+    cursor: not-allowed !important;
   }
 
   #ending-hint {
@@ -4681,6 +4710,7 @@ $(document).one(&quot;:passageend&quot;, function() {
   
   &lt;div id=&quot;ending-input-wrapper&quot;&gt;
     &lt;input type=&quot;text&quot; id=&quot;ghost-input&quot; placeholder=&quot;請在此處輸入純文字回應...&quot; autocomplete=&quot;off&quot; autofocus&gt;
+    &lt;button id=&quot;ghost-submit-btn&quot;&gt;送出&lt;/button&gt;
   &lt;/div&gt;
   
   &lt;div id=&quot;ending-hint&quot;&gt;我看得到您想說的話。&lt;/div&gt;
@@ -4696,6 +4726,7 @@ $(document).one(&quot;:passageend&quot;, function() {
 &lt;script&gt;
 $(document).one(&quot;:passageend&quot;, function() {
     var $input = $(&quot;#ghost-input&quot;);
+    var $submitBtn = $(&quot;#ghost-submit-btn&quot;);
     var $ghostResponse = $(&quot;#ending-ghost-response&quot;);
     var $container = $(&quot;#ending-container&quot;);
     var $typingStatus = $(&quot;#ending-typing-status&quot;);
@@ -4779,6 +4810,7 @@ $(document).one(&quot;:passageend&quot;, function() {
     function triggerIdleSequence() {
         isTriggered = true;
         $input.prop(&quot;disabled&quot;, true);
+        $submitBtn.prop(&quot;disabled&quot;, true);
         $ghostResponse.empty();
 
         playNotificationSound();
@@ -4820,200 +4852,208 @@ $(document).one(&quot;:passageend&quot;, function() {
     resetIdleTimer();
     $(document).on(&quot;keydown mousemove click&quot;, resetIdleTimer);
 
-    $input.on(&quot;keydown&quot;, function(e) {
-        if (e.which === 13) {
-            var val = $input.val().trim();
-            if (val === &quot;&quot; || isTriggered || isManipulating) return;
-            
-            clearTimeout(idleTimer);
-            $ghostResponse.empty();
+    // 核心處理函式：將核心對話判斷抽離，供鍵盤事件與按鍵事件共同調用
+    function processInput() {
+        var val = $input.val().trim();
+        if (val === &quot;&quot; || isTriggered || isManipulating) return;
+        
+        clearTimeout(idleTimer);
+        $ghostResponse.empty();
 
-            var politicalKeys = [&quot;台湾独立&quot;, &quot;台独&quot;, &quot;搞台独&quot;, &quot;台湾建国&quot;, &quot;臺灣獨立&quot;, &quot;臺灣建國&quot;, &quot;台灣獨立&quot;, &quot;臺灣獨立&quot;, &quot;台灣建國&quot;, &quot;台獨&quot;, &quot;臺獨&quot;];
-            var hasPolitical = politicalKeys.some(function(key) {
-                return val.includes(key);
-            });
+        var politicalKeys = [&quot;台湾独立&quot;, &quot;台独&quot;, &quot;搞台独&quot;, &quot;台湾建国&quot;, &quot;臺灣獨立&quot;, &quot;臺灣建國&quot;, &quot;台灣獨立&quot;, &quot;臺灣獨立&quot;, &quot;台灣建國&quot;, &quot;台獨&quot;, &quot;臺獨&quot;];
+        var hasPolitical = politicalKeys.some(function(key) {
+            return val.includes(key);
+        });
 
-            if (hasPolitical) {
-                typeText($ghostResponse, &quot;......&quot;, 800, function() {
-                    setTimeout(function() {
-                        typeText($ghostResponse, &quot;这个不行。&quot;, 800, function() {
-                            setTimeout(function() { $input.val(&quot;&quot;).focus(); }, 1000);
-                        }, true); 
-                    }, 500);
-                }, false); 
-                return;
-            }
-
-            if (val.includes(&quot;屁眼&quot;)) {
-                window.open(&quot;https://youtu.be/qFWBoP5Zl-E?si=jdYJ_7GU7WQHE1YZ&quot;, &quot;_blank&quot;);
-                $input.val(&quot;&quot;).focus();
-                return;
-            }
-            if (val.includes(&quot;賴祥德&quot;) || val.includes(&quot;柯文哲&quot;) || val.includes(&quot;我不會屈服&quot;)) {
-                window.open(&quot;https://youtube.com/shorts/whhE_39B1Zs?si=1cs6oOJUH0Qb_gY5&quot;, &quot;_blank&quot;);
-                $input.val(&quot;&quot;).focus();
-                return;
-            }
-            if (val.includes(&quot;史丹利&quot;)) {
-                window.open(&quot;https://youtu.be/PT9APxQFm14?si=Dnm4dBra4f7U30lz&quot;, &quot;_blank&quot;);
-                $input.val(&quot;&quot;).focus();
-                return;
-            }
-            var nlKeys = [&quot;NL&quot;, &quot;熊汶銨&quot;, &quot;熊哥哥&quot;, &quot;熊班長&quot;, &quot;阿能&quot;, &quot;熊問安&quot;];
-            var hasNL = false;
-            for(var k=0; k&lt;nlKeys.length; k++) {
-                if(val.includes(nlKeys[k])) { hasNL = true; break; }
-            }
-            if (hasNL) {
-                window.open(&quot;https://youtu.be/zA92YVc0xDg?si=Ev5YiwFrXvaEbeaO&quot;, &quot;_blank&quot;);
-                $input.val(&quot;&quot;).focus();
-                return;
-            }
-
-            // 彩蛋組：瑞克搖（不分大小寫模糊包含偵測）
-            var rickKeys = [&quot;瑞克搖&quot;, &quot;never gonna give you up&quot;, &quot;rick roll&quot;, &quot;rickrolling&quot;, &quot;rick-rolling&quot;, &quot;rickroll&quot;, &quot;永遠不會放棄你&quot;, &quot;絕對不會放棄你&quot;, &quot;絕不放棄你&quot;, &quot;永不放棄你&quot;];
-            var lowerVal = val.toLowerCase();
-            var hasRick = rickKeys.some(function(key) {
-                return lowerVal.includes(key);
-            });
-            if (hasRick) {
-                window.open(&quot;https://youtu.be/dQw4w9WgXcQ?si=FMhN_4vtJwDs123g&quot;, &quot;_blank&quot;);
-                $input.val(&quot;&quot;).focus();
-                return;
-            }
-
-            // 彩蛋組：統神端火鍋
-            if (val.includes(&quot;統神端火鍋&quot;) || val.includes(&quot;端火鍋&quot;)) {
-                window.open(&quot;https://youtu.be/dMTy6C4UiQ4?si=CkO1K864x9b6GKZE&quot;, &quot;_blank&quot;);
-                $input.val(&quot;&quot;).focus();
-                return;
-            }
-
-            // 彩蛋組：崴崴孟孟系列（白字、搞笑彈窗）
-            if (val.includes(&quot;崴崴孟孟&quot;) || val.includes(&quot;崴寶&quot;) || val.includes(&quot;孟寶&quot;)) {
-                typeText($ghostResponse, &quot;我不清楚他們是誰，但我猜您可能會想看這個&quot;, 1500, function() {
-                    setTimeout(function() {
-                        window.open(&quot;https://youtu.be/EPO7f7hMnOk?si=_yW_qmsz1FWBRoqD&quot;, &quot;_blank&quot;);
-                        $input.val(&quot;&quot;).focus();
-                    }, 800);
-                }, true);
-                return;
-            }
-
-            // 彩蛋組：67系列（白字、搞笑彈窗）
-            if (val.includes(&quot;67&quot;)) {
-                typeText($ghostResponse, &quot;......是這個嗎？&quot;, 1200, function() {
-                    setTimeout(function() {
-                        window.open(&quot;https://youtu.be/L7ejl_Hj3A8?si=laNuILXIoEGYorYb&quot;, &quot;_blank&quot;);
-                        $input.val(&quot;&quot;).focus();
-                    }, 800);
-                }, true);
-                return;
-            }
-
-            // 新增彩蛋組：春日影系列（白字、搞笑彈窗）
-            if (val.includes(&quot;春日影&quot;)) {
-                typeText($ghostResponse, &quot;為什麼要演奏春日影！&quot;, 1200, function() {
-                    setTimeout(function() {
-                        window.open(&quot;https://youtu.be/s8Sd3Y2GyDY?si=XcC5PzqiKgDK6PlS&amp;t=78&quot;, &quot;_blank&quot;);
-                        $input.val(&quot;&quot;).focus();
-                    }, 800);
-                }, true);
-                return;
-            }
-
-            var warmKeys = [&quot;抱我&quot;, &quot;親我&quot;, &quot;吻我&quot;, &quot;擁抱我&quot;, &quot;喜歡我&quot;, &quot;愛我&quot;, &quot;親吻我&quot;, &quot;永遠愛著我&quot;, &quot;永遠愛我&quot;, &quot;親你&quot;, &quot;吻你&quot;, &quot;擁抱你&quot;, &quot;喜歡你&quot;, &quot;愛你&quot;, &quot;親吻你&quot;, &quot;愛著你&quot;];
-            var isWarmTrigger = warmKeys.some(function(key) {
-                return val.includes(key);
-            });
-
-            if (isWarmTrigger) {
-                triggerFinalSequence(true); 
-                return;
-            }
-
-            var matched = null;
-            for (var i = 0; i &lt; groups.length; i++) {
-                if (groups[i].keys.includes(val)) {
-                    matched = groups[i];
-                    break;
-                }
-            }
-
-            if (!matched) {
-                triggerFinalSequence(false);
-                return;
-            }
-
-            if (matched.type === &quot;rollback&quot; || val === &quot;再陪我一下&quot;) {
-                isManipulating = true;
-                $input.prop(&quot;disabled&quot;, true);
-                
+        if (hasPolitical) {
+            typeText($ghostResponse, &quot;......&quot;, 800, function() {
                 setTimeout(function() {
-                    var deleteTimer = setInterval(function() {
-                        var currentText = $input.val();
-                        if (currentText.length &gt; 0) {
-                            $input.val(currentText.substring(0, currentText.length - 1));
-                        } else {
-                            clearInterval(deleteTimer);
-                            
-                            setTimeout(function() {
-                                var targetText = &quot;再陪我一下&quot;;
-                                var typeIdx = 0;
-                                var typeTimer = setInterval(function() {
-                                    if (typeIdx &lt; targetText.length) {
-                                        $input.val(targetText.substring(0, typeIdx + 1));
-                                        typeIdx++;
-                                    } else {
-                                        clearInterval(typeTimer);
-                                        isManipulating = false;
-                                        setTimeout(function() { triggerFinalSequence(false); }, 500);
-                                    }
-                                }, 300);
-                            }, 600);
-                        }
-                    }, 200);
-                }, 400);
-            } 
-            else if (matched.type === &quot;curse&quot;) {
-                typeText($ghostResponse, &quot;您心情不好嗎？&quot;, 1200, function() {
+                    typeText($ghostResponse, &quot;这个不行。&quot;, 800, function() {
+                        setTimeout(function() { $input.val(&quot;&quot;).focus(); }, 1000);
+                    }, true); 
+                }, 500);
+            }, false); 
+            return;
+        }
+
+        if (val.includes(&quot;屁眼&quot;)) {
+            window.open(&quot;https://youtu.be/qFWBoP5Zl-E?si=jdYJ_7GU7WQHE1YZ&quot;, &quot;_blank&quot;);
+            $input.val(&quot;&quot;).focus();
+            return;
+        }
+        if (val.includes(&quot;賴祥德&quot;) || val.includes(&quot;柯文哲&quot;) || val.includes(&quot;我不會屈服&quot;)) {
+            window.open(&quot;https://youtube.com/shorts/whhE_39B1Zs?si=1cs6oOJUH0Qb_gY5&quot;, &quot;_blank&quot;);
+            $input.val(&quot;&quot;).focus();
+            return;
+        }
+        if (val.includes(&quot;史丹利&quot;)) {
+            window.open(&quot;https://youtu.be/PT9APxQFm14?si=Dnm4dBra4f7U30lz&quot;, &quot;_blank&quot;);
+            $input.val(&quot;&quot;).focus();
+            return;
+        }
+        var nlKeys = [&quot;NL&quot;, &quot;熊汶銨&quot;, &quot;熊哥哥&quot;, &quot;熊班長&quot;, &quot;阿能&quot;, &quot;熊問安&quot;];
+        var hasNL = false;
+        for(var k=0; k&lt;nlKeys.length; k++) {
+            if(val.includes(nlKeys[k])) { hasNL = true; break; }
+        }
+        if (hasNL) {
+            window.open(&quot;https://youtu.be/zA92YVc0xDg?si=Ev5YiwFrXvaEbeaO&quot;, &quot;_blank&quot;);
+            $input.val(&quot;&quot;).focus();
+            return;
+        }
+
+        var rickKeys = [&quot;瑞克搖&quot;, &quot;never gonna give you up&quot;, &quot;rick roll&quot;, &quot;rickrolling&quot;, &quot;rick-rolling&quot;, &quot;rickroll&quot;, &quot;永遠不會放棄你&quot;, &quot;絕對不會放棄你&quot;, &quot;絕不放棄你&quot;, &quot;永不放棄你&quot;];
+        var lowerVal = val.toLowerCase();
+        var hasRick = rickKeys.some(function(key) {
+            return lowerVal.includes(key);
+        });
+        if (hasRick) {
+            window.open(&quot;https://youtu.be/dQw4w9WgXcQ?si=FMhN_4vtJwDs123g&quot;, &quot;_blank&quot;);
+            $input.val(&quot;&quot;).focus();
+            return;
+        }
+
+        if (val.includes(&quot;統神端火鍋&quot;) || val.includes(&quot;端火鍋&quot;)) {
+            window.open(&quot;https://youtu.be/dMTy6C4UiQ4?si=CkO1K864x9b6GKZE&quot;, &quot;_blank&quot;);
+            $input.val(&quot;&quot;).focus();
+            return;
+        }
+
+        if (val.includes(&quot;崴崴孟孟&quot;) || val.includes(&quot;崴寶&quot;) || val.includes(&quot;孟寶&quot;)) {
+            typeText($ghostResponse, &quot;我不清楚他們是誰，但我猜您可能會想看這個&quot;, 1500, function() {
+                setTimeout(function() {
+                    window.open(&quot;https://youtu.be/EPO7f7hMnOk?si=_yW_qmsz1FWBRoqD&quot;, &quot;_blank&quot;);
                     $input.val(&quot;&quot;).focus();
-                });
-            }
-            else if (matched.type === &quot;nailong&quot;) {
-                typeText($ghostResponse, &quot;......&quot;, 800, function() {
-                    setTimeout(function() {
-                        typeText($ghostResponse, &quot;我對您感到遺憾。&quot;, 1200, function() {
-                            setTimeout(function() {
-                                window.open(&quot;https://youtu.be/yaKbNveHjRc?si=nCioJh0qjDMZN6in&quot;, &quot;_blank&quot;);
-                                $input.val(&quot;&quot;).focus();
-                            }, 1000);
-                        }, true);
-                    }, 500);
-                }, true);
-            }
-            else if (matched.type === &quot;meme_yt&quot;) {
-                window.open(&quot;https://youtu.be/kaprsg4bLHc?si=C_-iZthtPdZzT45f&quot;, &quot;_blank&quot;);
-                $input.val(&quot;&quot;).focus();
-            }
-            else {
-                typeText($ghostResponse, matched.resp, 1500, function() {
-                    if (matched.sound === &quot;door&quot;) {
-                        playDoorOpenSound();
-                    }
-                    if (val === &quot;救命&quot;) {
-                        setTimeout(function() { triggerFinalSequence(false); }, 1000);
-                    } else {
-                        $input.val(&quot;&quot;).focus();
-                    }
-                });
+                }, 800);
+            }, true);
+            return;
+        }
+
+        if (val.includes(&quot;67&quot;)) {
+            typeText($ghostResponse, &quot;......是這個嗎？&quot;, 1200, function() {
+                setTimeout(function() {
+                    window.open(&quot;https://youtu.be/L7ejl_Hj3A8?si=laNuILXIoEGYorYb&quot;, &quot;_blank&quot;);
+                    $input.val(&quot;&quot;).focus();
+                }, 800);
+            }, true);
+            return;
+        }
+
+        if (val.includes(&quot;春日影&quot;)) {
+            typeText($ghostResponse, &quot;為什麼要演奏春日影！&quot;, 1200, function() {
+                setTimeout(function() {
+                    window.open(&quot;https://youtu.be/s8Sd3Y2GyDY?si=XcC5PzqiKgDK6PlS&amp;t=78&quot;, &quot;_blank&quot;);
+                    $input.val(&quot;&quot;).focus();
+                }, 800);
+            }, true);
+            return;
+        }
+
+        var warmKeys = [&quot;抱我&quot;, &quot;親我&quot;, &quot;吻我&quot;, &quot;擁抱我&quot;, &quot;喜歡我&quot;, &quot;愛我&quot;, &quot;親吻我&quot;, &quot;永遠愛著我&quot;, &quot;永遠愛我&quot;, &quot;親你&quot;, &quot;吻你&quot;, &quot;擁抱你&quot;, &quot;喜歡你&quot;, &quot;愛你&quot;, &quot;親吻你&quot;, &quot;愛著你&quot;];
+        var isWarmTrigger = warmKeys.some(function(key) {
+            return val.includes(key);
+        });
+
+        if (isWarmTrigger) {
+            triggerFinalSequence(true); 
+            return;
+        }
+
+        var matched = null;
+        for (var i = 0; i &lt; groups.length; i++) {
+            if (groups[i].keys.includes(val)) {
+                matched = groups[i];
+                break;
             }
         }
+
+        if (!matched) {
+            triggerFinalSequence(false);
+            return;
+        }
+
+        if (matched.type === &quot;rollback&quot; || val === &quot;再陪我一下&quot;) {
+            isManipulating = true;
+            $input.prop(&quot;disabled&quot;, true);
+            $submitBtn.prop(&quot;disabled&quot;, true);
+            
+            setTimeout(function() {
+                var deleteTimer = setInterval(function() {
+                    var currentText = $input.val();
+                    if (currentText.length &gt; 0) {
+                        $input.val(currentText.substring(0, currentText.length - 1));
+                    } else {
+                        clearInterval(deleteTimer);
+                        
+                        setTimeout(function() {
+                            var targetText = &quot;再陪我一下&quot;;
+                            var typeIdx = 0;
+                            var typeTimer = setInterval(function() {
+                                if (typeIdx &lt; targetText.length) {
+                                    $input.val(targetText.substring(0, typeIdx + 1));
+                                    typeIdx++;
+                                } else {
+                                    clearInterval(typeTimer);
+                                    isManipulating = false;
+                                    setTimeout(function() { triggerFinalSequence(false); }, 500);
+                                }
+                            }, 300);
+                        }, 600);
+                    }
+                }, 200);
+            }, 400);
+        } 
+        else if (matched.type === &quot;curse&quot;) {
+            typeText($ghostResponse, &quot;您心情不好嗎？&quot;, 1200, function() {
+                $input.val(&quot;&quot;).focus();
+            });
+        }
+        else if (matched.type === &quot;nailong&quot;) {
+            typeText($ghostResponse, &quot;......&quot;, 800, function() {
+                setTimeout(function() {
+                    typeText($ghostResponse, &quot;我對您感到遺憾。&quot;, 1200, function() {
+                        setTimeout(function() {
+                            window.open(&quot;https://youtu.be/yaKbNveHjRc?si=nCioJh0qjDMZN6in&quot;, &quot;_blank&quot;);
+                            $input.val(&quot;&quot;).focus();
+                        }, 1000);
+                    }, true);
+                }, 500);
+            }, true);
+        }
+        else if (matched.type === &quot;meme_yt&quot;) {
+            window.open(&quot;https://youtu.be/kaprsg4bLHc?si=C_-iZthtPdZzT45f&quot;, &quot;_blank&quot;);
+            $input.val(&quot;&quot;).focus();
+        }
+        else {
+            typeText($ghostResponse, matched.resp, 1500, function() {
+                if (matched.sound === &quot;door&quot;) {
+                    playDoorOpenSound();
+                }
+                if (val === &quot;救命&quot;) {
+                    setTimeout(function() { triggerFinalSequence(false); }, 1000);
+                } else {
+                    $input.val(&quot;&quot;).focus();
+                }
+            });
+        }
+    }
+
+    // 鍵盤輸入監聽
+    $input.on(&quot;keydown&quot;, function(e) {
+        if (e.which === 13) {
+            processInput();
+        }
+    });
+
+    // 新增：手機版實體「送出」按鍵點擊監聽
+    $submitBtn.on(&quot;click&quot;, function() {
+        processInput();
     });
 
     function triggerFinalSequence(isWarmRoute) {
         isTriggered = true;
         $input.prop(&quot;disabled&quot;, true);
+        $submitBtn.prop(&quot;disabled&quot;, true);
         $(&quot;#ending-input-wrapper&quot;).fadeOut(600);
         $(&quot;#ending-hint&quot;).fadeOut(600);
         $ghostResponse.fadeOut(600);
