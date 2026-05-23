@@ -4807,6 +4807,7 @@ $(document).one(&quot;:passageend&quot;, function() {
         { keys: [&quot;我喜歡你&quot;], resp: &quot;我對您不僅僅是喜歡。&quot; },
         { keys: [&quot;哈哈&quot;], resp: &quot;我喜歡您的笑容。&quot; },
         { keys: [&quot;救命&quot;], resp: &quot;您現在看起來不像真的想離開。&quot; },
+        { keys: [&quot;看著我&quot;, &quot;看我&quot;, &quot;你要看著我&quot;, &quot;你看著我&quot;, &quot;跟我對視&quot;, &quot;跟我對眼&quot;, &quot;直視我&quot;, &quot;正視我&quot;], resp: &quot;我一直都在看著呢，親愛的。&quot; },
         { keys: [&quot;養我&quot;, &quot;錢給我&quot;, &quot;能不能包養我&quot;, &quot;包養我&quot;, &quot;能不能養我&quot;, &quot;把錢給我&quot;, &quot;給我錢&quot;, &quot;養我拜託&quot;, &quot;收養我&quot;, &quot;送我禮物&quot;, &quot;送我車&quot;], resp: &quot;那您先幫我開門吧^^&quot;, sound: &quot;door&quot; },
         { keys: [&quot;我是奶龍&quot;], type: &quot;nailong&quot; },
         { keys: [&quot;馬英九還我牛&quot;], type: &quot;meme_yt&quot; },
@@ -4866,6 +4867,58 @@ $(document).one(&quot;:passageend&quot;, function() {
             if (hasNL) {
                 window.open(&quot;https://youtu.be/zA92YVc0xDg?si=Ev5YiwFrXvaEbeaO&quot;, &quot;_blank&quot;);
                 $input.val(&quot;&quot;).focus();
+                return;
+            }
+
+            // 彩蛋組：瑞克搖（不分大小寫模糊包含偵測）
+            var rickKeys = [&quot;瑞克搖&quot;, &quot;never gonna give you up&quot;, &quot;rick roll&quot;, &quot;rickrolling&quot;, &quot;rick-rolling&quot;, &quot;rickroll&quot;, &quot;永遠不會放棄你&quot;, &quot;絕對不會放棄你&quot;, &quot;絕不放棄你&quot;, &quot;永不放棄你&quot;];
+            var lowerVal = val.toLowerCase();
+            var hasRick = rickKeys.some(function(key) {
+                return lowerVal.includes(key);
+            });
+            if (hasRick) {
+                window.open(&quot;https://youtu.be/dQw4w9WgXcQ?si=FMhN_4vtJwDs123g&quot;, &quot;_blank&quot;);
+                $input.val(&quot;&quot;).focus();
+                return;
+            }
+
+            // 彩蛋組：統神端火鍋
+            if (val.includes(&quot;統神端火鍋&quot;) || val.includes(&quot;端火鍋&quot;)) {
+                window.open(&quot;https://youtu.be/dMTy6C4UiQ4?si=CkO1K864x9b6GKZE&quot;, &quot;_blank&quot;);
+                $input.val(&quot;&quot;).focus();
+                return;
+            }
+
+            // 彩蛋組：崴崴孟孟系列（白字、搞笑彈窗）
+            if (val.includes(&quot;崴崴孟孟&quot;) || val.includes(&quot;崴寶&quot;) || val.includes(&quot;孟寶&quot;)) {
+                typeText($ghostResponse, &quot;我不清楚他們是誰，但我猜您可能會想看這個&quot;, 1500, function() {
+                    setTimeout(function() {
+                        window.open(&quot;https://youtu.be/EPO7f7hMnOk?si=_yW_qmsz1FWBRoqD&quot;, &quot;_blank&quot;);
+                        $input.val(&quot;&quot;).focus();
+                    }, 800);
+                }, true);
+                return;
+            }
+
+            // 彩蛋組：67系列（白字、搞笑彈窗）
+            if (val.includes(&quot;67&quot;)) {
+                typeText($ghostResponse, &quot;......是這個嗎？&quot;, 1200, function() {
+                    setTimeout(function() {
+                        window.open(&quot;https://youtu.be/L7ejl_Hj3A8?si=laNuILXIoEGYorYb&quot;, &quot;_blank&quot;);
+                        $input.val(&quot;&quot;).focus();
+                    }, 800);
+                }, true);
+                return;
+            }
+
+            // 新增彩蛋組：春日影系列（白字、搞笑彈窗）
+            if (val.includes(&quot;春日影&quot;)) {
+                typeText($ghostResponse, &quot;為什麼要演奏春日影！&quot;, 1200, function() {
+                    setTimeout(function() {
+                        window.open(&quot;https://youtu.be/s8Sd3Y2GyDY?si=XcC5PzqiKgDK6PlS&amp;t=78&quot;, &quot;_blank&quot;);
+                        $input.val(&quot;&quot;).focus();
+                    }, 800);
+                }, true);
                 return;
             }
 
