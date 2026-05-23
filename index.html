@@ -4512,7 +4512,6 @@ $(document).one(&quot;:passageend&quot;, function() {
     z-index: 9999;
   }
 
-  /* 中央核心對話文字（預設紅字、粗體、大字） */
   #ending-main-text {
     font-size: 24px;
     color: #FF0000;
@@ -4525,7 +4524,6 @@ $(document).one(&quot;:passageend&quot;, function() {
     line-height: 1.6;
   }
 
-  /* 即時觸發的靈異回應（預設紅字粗體大字） */
   #ending-ghost-response {
     font-size: 24px;
     color: #FF0000;
@@ -4544,7 +4542,6 @@ $(document).one(&quot;:passageend&quot;, function() {
     animation-delay: 1.5s;
   }
 
-  /* Q1 格式高質感黑化輸入框 */
   #ghost-input {
     width: 100%;
     box-sizing: border-box;
@@ -4572,7 +4569,6 @@ $(document).one(&quot;:passageend&quot;, function() {
     text-align: left !important;
   }
 
-  /* 提示字：純白、放大 */
   #ending-hint {
     margin-top: 25px;
     font-size: 16px;
@@ -4609,7 +4605,6 @@ $(document).one(&quot;:passageend&quot;, function() {
     100% { transform: translate(-50%, -50%) translate(1px, 2px); }
   }
 
-  /* 🎯 轉為白底結局時的專屬樣式 */
   html.warm-ending, html.warm-ending body {
     background-color: #FFFFFF !important;
     color: #1a1a1a !important;
@@ -4710,7 +4705,6 @@ $(document).one(&quot;:passageend&quot;, function() {
     var isManipulating = false; 
     var idleTimer = null;
 
-    // 初始化音訊
     var audioCtx = null;
     var initAudio = function() {
         if (!audioCtx) {
@@ -4719,7 +4713,6 @@ $(document).one(&quot;:passageend&quot;, function() {
         }
     };
 
-    // 🔊 訊息提示音
     var playNotificationSound = function() {
         initAudio();
         try {
@@ -4737,7 +4730,6 @@ $(document).one(&quot;:passageend&quot;, function() {
         } catch(e) {}
     };
 
-    // 🔊 門口開門聲
     var playDoorOpenSound = function() {
         initAudio();
         try {
@@ -4755,7 +4747,6 @@ $(document).one(&quot;:passageend&quot;, function() {
         } catch(e) {}
     };
 
-    // 🕒 緩慢打字機特效
     var typeText = function($element, text, duration, callback, isWhiteText) {
         $element.stop(true, true).empty().css(&quot;opacity&quot;, 1);
         if (isWhiteText) {
@@ -4777,7 +4768,6 @@ $(document).one(&quot;:passageend&quot;, function() {
         }, intervalSpeed);
     };
 
-    // ⏳ 掛機重設
     var resetIdleTimer = function() {
         if (isTriggered || isManipulating) return;
         clearTimeout(idleTimer);
@@ -4786,7 +4776,6 @@ $(document).one(&quot;:passageend&quot;, function() {
         }, 30000); 
     };
 
-    // 🛑 30秒沒輸入觸發
     function triggerIdleSequence() {
         isTriggered = true;
         $input.prop(&quot;disabled&quot;, true);
@@ -4810,7 +4799,6 @@ $(document).one(&quot;:passageend&quot;, function() {
         });
     }
 
-    // 關鍵字數據庫
     var groups = [
         { keys: [&quot;離開&quot;, &quot;滾&quot;, &quot;給我滾&quot;, &quot;快滾&quot;, &quot;馬上走&quot;], type: &quot;rollback&quot; },
         { keys: [&quot;你是誰&quot;, &quot;你到底是誰&quot;, &quot;你誰&quot;, &quot;你誰啊&quot;, &quot;快誰阿&quot;], resp: &quot;比起我是誰，您好像比較在意我是怎麼找到您的。&quot; },
@@ -4831,7 +4819,6 @@ $(document).one(&quot;:passageend&quot;, function() {
     resetIdleTimer();
     $(document).on(&quot;keydown mousemove click&quot;, resetIdleTimer);
 
-    // 監聽鍵盤 Enter 送出
     $input.on(&quot;keydown&quot;, function(e) {
         if (e.which === 13) {
             var val = $input.val().trim();
@@ -4840,8 +4827,7 @@ $(document).one(&quot;:passageend&quot;, function() {
             clearTimeout(idleTimer);
             $ghostResponse.empty();
 
-            // 🎯 1. 【政治組判定】改成只要「包含」關鍵字就觸發，且內容與註解完全維持簡體字
-            var politicalKeys = [&quot;台湾独立&quot;, &quot;台独&quot;, &quot;搞台独&quot;, &quot;台湾建国&quot;, &quot;台灣獨立&quot;, &quot;台灣建國&quot;, &quot;臺灣獨立&quot;, &quot;臺灣建國&quot;, &quot;臺獨&quot;, &quot;台獨&quot;];
+            var politicalKeys = [&quot;台湾独立&quot;, &quot;台独&quot;, &quot;搞台独&quot;, &quot;台湾建国&quot;, &quot;臺灣獨立&quot;, &quot;臺灣建國&quot;, &quot;台灣獨立&quot;, &quot;臺灣獨立&quot;, &quot;台灣建國&quot;, &quot;台獨&quot;, &quot;臺獨&quot;];
             var hasPolitical = politicalKeys.some(function(key) {
                 return val.includes(key);
             });
@@ -4851,13 +4837,12 @@ $(document).one(&quot;:passageend&quot;, function() {
                     setTimeout(function() {
                         typeText($ghostResponse, &quot;这个不行。&quot;, 800, function() {
                             setTimeout(function() { $input.val(&quot;&quot;).focus(); }, 1000);
-                        }, true); // 使用白字顯示
+                        }, true); 
                     }, 500);
                 }, false); 
                 return;
             }
 
-            // 🎯 2. 【包含特定關鍵字】跳轉 YouTube 判定
             if (val.includes(&quot;屁眼&quot;)) {
                 window.open(&quot;https://youtu.be/qFWBoP5Zl-E?si=jdYJ_7GU7WQHE1YZ&quot;, &quot;_blank&quot;);
                 $input.val(&quot;&quot;).focus();
@@ -4884,7 +4869,6 @@ $(document).one(&quot;:passageend&quot;, function() {
                 return;
             }
 
-            // 🎯 3. 【溫馨情話關鍵字組】模糊包含判定 (.includes)
             var warmKeys = [&quot;抱我&quot;, &quot;親我&quot;, &quot;吻我&quot;, &quot;擁抱我&quot;, &quot;喜歡我&quot;, &quot;愛我&quot;, &quot;親吻我&quot;, &quot;永遠愛著我&quot;, &quot;永遠愛我&quot;, &quot;親你&quot;, &quot;吻你&quot;, &quot;擁抱你&quot;, &quot;喜歡你&quot;, &quot;愛你&quot;, &quot;親吻你&quot;, &quot;愛著你&quot;];
             var isWarmTrigger = warmKeys.some(function(key) {
                 return val.includes(key);
@@ -4895,7 +4879,6 @@ $(document).one(&quot;:passageend&quot;, function() {
                 return;
             }
 
-            // 原本的精準數據庫篩選
             var matched = null;
             for (var i = 0; i &lt; groups.length; i++) {
                 if (groups[i].keys.includes(val)) {
