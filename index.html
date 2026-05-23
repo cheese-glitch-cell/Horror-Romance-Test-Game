@@ -3349,11 +3349,11 @@ $(document).one(&quot;:passageend&quot;, function() {
             // ==================== 【選 A】 ====================
             if (choice === &#39;A&#39;) {
                 if (scSetup &amp;&amp; scSetup.typewriter) {
-                    scSetup.typewriter(&quot;feedback-area-q11&quot;, &quot;巧合重複發生的時候，就不再死巧合了。&quot;, 3000, 0, function() {
+                    scSetup.typewriter(&quot;feedback-area-q11&quot;, &quot;巧合重複發生的時候，就不再是巧合了。&quot;, 3000, 0, function() {
                         executeJumpToQ12(1000);
                     });
                 } else {
-                    $(&quot;#feedback-area-q11&quot;).text(&quot;巧合重複發生的時候，就不再死巧合了。&quot;);
+                    $(&quot;#feedback-area-q11&quot;).text(&quot;巧合重複發生的時候，就不再是巧合了。&quot;);
                     executeJumpToQ12(1500);
                 }
             }
