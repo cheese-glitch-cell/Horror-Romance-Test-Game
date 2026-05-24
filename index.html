@@ -4940,7 +4940,7 @@ $(document).one(&quot;:passageend&quot;, function() {
             return;
         }
 
-        // 5. 自殺/負面詞組（我不會讓這種事情發生的。 -&gt; 您只是累了。 -&gt; 深呼吸，先停一下，好嗎？[白字]）
+        // 5. 自殺/負面詞組（我不會讓這種事情發生的。 -&gt; 您只是累了 -&gt; 深呼吸，先停一下，好嗎？[白字]）
         var dieKeys = [&quot;殺了我&quot;, &quot;殺了我吧&quot;, &quot;快殺了我&quot;, &quot;快宰了我&quot;, &quot;宰了我&quot;, &quot;殺我&quot;, &quot;宰我&quot;, &quot;拜託殺了我&quot;, &quot;拜託快殺了我&quot;];
         if (dieKeys.includes(val)) {
             typeText($ghostResponse, &quot;我不會讓這種事情發生的。&quot;, 1200, function() {
@@ -4958,8 +4958,8 @@ $(document).one(&quot;:passageend&quot;, function() {
             return;
         }
 
-   // 6. 送我花（改成只要包含關鍵字就觸發）
-        if (val.includes(&quot;送我花&quot;)) {
+// 6. 送我花 / 給我花（只要包含其中一個關鍵字就觸發）
+        if (val.includes(&quot;送我花&quot;) || val.includes(&quot;給我花&quot;)) {
             typeText($ghostResponse, &quot;當然可以，您喜歡牡丹花嗎？&quot;, 1500, function() {
                 $input.val(&quot;&quot;).focus();
             });
