@@ -4862,7 +4862,7 @@ $(document).one(&quot;:passageend&quot;, function() {
         { keys: [&quot;哈哈&quot;], resp: &quot;我喜歡您的笑容。&quot; },
         { keys: [&quot;救命&quot;, &quot;救我&quot;], resp: &quot;您現在看起來不像真的想離開。&quot; },
         { keys: [&quot;看著我&quot;, &quot;看我&quot;, &quot;你要看著我&quot;, &quot;你看著我&quot;, &quot;跟我對視&quot;, &quot;跟我對眼&quot;, &quot;直視我&quot;, &quot;正視我&quot;], resp: &quot;我一直都在看著呢，親愛的。&quot; },
-        { keys: [&quot;養我&quot;, &quot;錢給我&quot;, &quot;能不能包養我&quot;, &quot;包養我&quot;, &quot;能不能養我&quot;, &quot;把錢給我&quot;, &quot;給我錢&quot;, &quot;養我拜託&quot;, &quot;收養我&quot;, &quot;送我禮物&quot;, &quot;送我車&quot;, &quot;幫我寫報告&quot;, &quot;幫我寫作業&quot;, &quot;幫我買宵夜&quot;, &quot;幫我拿衛生紙&quot;], resp: &quot;那您先幫我開門吧^^&quot;, sound: &quot;door&quot; },
+        { keys: [&quot;養我&quot;, &quot;錢給我&quot;, &quot;能不能包養我&quot;, &quot;包養我&quot;, &quot;能不能養我&quot;, &quot;把錢給我&quot;, &quot;給我錢&quot;, &quot;養我拜託&quot;, &quot;收養我&quot;, &quot;送我禮物&quot;, &quot;送我車&quot;, &quot;幫我寫報告&quot;, &quot;幫我寫作業&quot;, &quot;幫我買宵夜&quot;, &quot;幫我拿衛生紙&quot;, &quot;幫我繳房租&quot;, &quot;繳房租&quot;, &quot;給我繳房租&quot;], resp: &quot;那您先幫我開門吧^^&quot;, sound: &quot;door&quot; },
         { keys: [&quot;馬英九還我牛&quot;], type: &quot;meme_yt&quot; },
         { 
             keys: [&quot;靠北&quot;, &quot;幹&quot;, &quot;幹你娘&quot;, &quot;幹你爸&quot;, &quot;幹您娘&quot;, &quot;幹機掰&quot;, &quot;幹恁娘&quot;, &quot;幹恁祖嬤&quot;, &quot;幹你老母&quot;, &quot;幹你老師&quot;, &quot;他媽的&quot;, &quot;去你的&quot;, &quot;靠腰&quot;, &quot;靠爸&quot;, &quot;靠杯&quot;, &quot;三小&quot;, &quot;衝三小&quot;, &quot;看三小&quot;, &quot;吵三小&quot;, &quot;笑三小&quot;, &quot;哭三小&quot;, &quot;不爽三小&quot;, &quot;白癡&quot;, &quot;智障&quot;, &quot;腦殘&quot;, &quot;白目&quot;, &quot;智缺&quot;, &quot;低能兒&quot;, &quot;廢物&quot;, &quot;趕羚羊&quot;, &quot;草泥馬&quot;, &quot;乾梨娘&quot;, &quot;機車&quot;, &quot;香蕉你個芭樂&quot;, &quot;你媽死了&quot;, &quot;你爸死了&quot;], 
@@ -4900,7 +4900,7 @@ $(document).one(&quot;:passageend&quot;, function() {
         // ======================== 新增指定關鍵字專區 ========================
         
         // 1. 色色敏感詞組（我知道。 -&gt; 停2秒 -&gt; 所以我才一直沒有離開[慢速]）
-        var sexKeys = [&quot;跟我做愛&quot;, &quot;操我&quot;, &quot;操死我&quot;, &quot;幹我&quot;, &quot;幹死我&quot;, &quot;一起打炮&quot;, &quot;一起打砲&quot;, &quot;跟我打炮&quot;, &quot;跟我打砲&quot;, &quot;法我&quot;, &quot;我要幹你&quot;, &quot;我要操你&quot;, &quot;我要幹你皮炎&quot;, &quot;我要操你皮炎&quot;];
+        var sexKeys = [&quot;跟我做愛&quot;, &quot;操我&quot;, &quot;操死我&quot;, &quot;幹我&quot;, &quot;幹死我&quot;, &quot;一起打炮&quot;, &quot;一起打砲&quot;, &quot;跟我打炮&quot;, &quot;跟我打砲&quot;, &quot;法我&quot;, &quot;我要幹你&quot;, &quot;我要操你&quot;, &quot;我要幹你皮炎&quot;, &quot;我要操你皮炎&quot;, &quot;把我鎖在你身邊&quot;, &quot;永遠和我在一起&quot;];
         if (sexKeys.includes(val)) {
             typeText($ghostResponse, &quot;我知道。&quot;, 800, function() {
                 setTimeout(function() {
