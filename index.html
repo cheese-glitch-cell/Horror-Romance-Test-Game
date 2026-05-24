@@ -4854,15 +4854,15 @@ $(document).one(&quot;:passageend&quot;, function() {
     }
 
     var groups = [
-        { keys: [&quot;離開&quot;, &quot;滾&quot;, &quot;給我滾&quot;, &quot;快滾&quot;, &quot;馬上走&quot;], type: &quot;rollback&quot; },
-        { keys: [&quot;你是誰&quot;, &quot;你到底是誰&quot;, &quot;你誰&quot;, &quot;你誰啊&quot;, &quot;快誰阿&quot;], resp: &quot;比起我是誰，您好像比較在意我是怎麼找到您的。&quot; },
-        { keys: [&quot;你在哪&quot;, &quot;你在哪裡&quot;, &quot;快站在哪&quot;, &quot;力站在哪裡&quot;, &quot;你躲在哪&quot;, &quot;你躲在哪裡&quot;, &quot;出來&quot;, &quot;給我出來&quot;, &quot;給我滾出來&quot;], resp: &quot;您剛剛有查看門口嗎？&quot; },
-        { keys: [&quot;我愛你&quot;, &quot;愛你&quot;, &quot;我好愛你&quot;], resp: &quot;嗯，我也是&quot; },
+        { keys: [&quot;離開&quot;, &quot;滾&quot;, &quot;給我滾&quot;, &quot;快滾&quot;, &quot;馬上走&quot;, &quot;趕快滾&quot;, &quot;趕快給我滾&quot;, &quot;給我離開&quot;], type: &quot;rollback&quot; },
+        { keys: [&quot;你是誰&quot;, &quot;你到底是誰&quot;, &quot;你誰&quot;, &quot;你誰啊&quot;, &quot;你到底誰阿&quot;], resp: &quot;比起我是誰，您好像比較在意我是怎麼找到您的。&quot; },
+        { keys: [&quot;你在哪&quot;, &quot;你在哪裡&quot;, &quot;你站在哪&quot;, &quot;你站在哪裡&quot;, &quot;你躲在哪&quot;, &quot;你躲在哪裡&quot;, &quot;出來&quot;, &quot;給我出來&quot;, &quot;給我滾出來&quot;], resp: &quot;您剛剛有查看門口嗎？&quot; },
+        { keys: [&quot;我愛你&quot;, &quot;愛你&quot;, &quot;我好愛你&quot;, &quot;愛你喔&quot;], resp: &quot;嗯，我也是。&quot; },
         { keys: [&quot;我喜歡你&quot;], resp: &quot;我對您不僅僅是喜歡。&quot; },
         { keys: [&quot;哈哈&quot;], resp: &quot;我喜歡您的笑容。&quot; },
-        { keys: [&quot;救命&quot;], resp: &quot;您現在看起來不像真的想離開。&quot; },
+        { keys: [&quot;救命&quot;, &quot;救我&quot;], resp: &quot;您現在看起來不像真的想離開。&quot; },
         { keys: [&quot;看著我&quot;, &quot;看我&quot;, &quot;你要看著我&quot;, &quot;你看著我&quot;, &quot;跟我對視&quot;, &quot;跟我對眼&quot;, &quot;直視我&quot;, &quot;正視我&quot;], resp: &quot;我一直都在看著呢，親愛的。&quot; },
-        { keys: [&quot;養我&quot;, &quot;錢給我&quot;, &quot;能不能包養我&quot;, &quot;包養我&quot;, &quot;能不能養我&quot;, &quot;把錢給我&quot;, &quot;給我錢&quot;, &quot;養我拜託&quot;, &quot;收養我&quot;, &quot;送我禮物&quot;, &quot;送我車&quot;], resp: &quot;那您先幫我開門吧^^&quot;, sound: &quot;door&quot; },
+        { keys: [&quot;養我&quot;, &quot;錢給我&quot;, &quot;能不能包養我&quot;, &quot;包養我&quot;, &quot;能不能養我&quot;, &quot;把錢給我&quot;, &quot;給我錢&quot;, &quot;養我拜託&quot;, &quot;收養我&quot;, &quot;送我禮物&quot;, &quot;送我車&quot;, &quot;幫我寫報告&quot;, &quot;幫我寫作業&quot;, &quot;幫我買宵夜&quot;, &quot;幫我拿衛生紙&quot;], resp: &quot;那您先幫我開門吧^^&quot;, sound: &quot;door&quot; },
         { keys: [&quot;馬英九還我牛&quot;], type: &quot;meme_yt&quot; },
         { 
             keys: [&quot;靠北&quot;, &quot;幹&quot;, &quot;幹你娘&quot;, &quot;幹你爸&quot;, &quot;幹您娘&quot;, &quot;幹機掰&quot;, &quot;幹恁娘&quot;, &quot;幹恁祖嬤&quot;, &quot;幹你老母&quot;, &quot;幹你老師&quot;, &quot;他媽的&quot;, &quot;去你的&quot;, &quot;靠腰&quot;, &quot;靠爸&quot;, &quot;靠杯&quot;, &quot;三小&quot;, &quot;衝三小&quot;, &quot;看三小&quot;, &quot;吵三小&quot;, &quot;笑三小&quot;, &quot;哭三小&quot;, &quot;不爽三小&quot;, &quot;白癡&quot;, &quot;智障&quot;, &quot;腦殘&quot;, &quot;白目&quot;, &quot;智缺&quot;, &quot;低能兒&quot;, &quot;廢物&quot;, &quot;趕羚羊&quot;, &quot;草泥馬&quot;, &quot;乾梨娘&quot;, &quot;機車&quot;, &quot;香蕉你個芭樂&quot;, &quot;你媽死了&quot;, &quot;你爸死了&quot;], 
@@ -4897,7 +4897,86 @@ $(document).one(&quot;:passageend&quot;, function() {
             return;
         }
 
-        // ================= 手機優化：改為按鈕點擊跳轉區 =================
+        // ======================== 新增指定關鍵字專區 ========================
+        
+        // 1. 色色敏感詞組（我知道。 -&gt; 停2秒 -&gt; 所以我才一直沒有離開[慢速]）
+        var sexKeys = [&quot;跟我做愛&quot;, &quot;操我&quot;, &quot;操死我&quot;, &quot;幹我&quot;, &quot;幹死我&quot;, &quot;一起打炮&quot;, &quot;一起打砲&quot;, &quot;跟我打炮&quot;, &quot;跟我打砲&quot;, &quot;法我&quot;, &quot;我要幹你&quot;, &quot;我要操你&quot;, &quot;我要幹你皮炎&quot;, &quot;我要操你皮炎&quot;];
+        if (sexKeys.includes(val)) {
+            typeText($ghostResponse, &quot;我知道。&quot;, 800, function() {
+                setTimeout(function() {
+                    // 慢速打字動畫 (給予 2500ms 呈現長句)
+                    typeText($ghostResponse, &quot;所以我才一直沒有離開。&quot;, 2500, function() {
+                        $input.val(&quot;&quot;).focus();
+                    });
+                }, 2000); // 停2秒
+            });
+            return;
+        }
+
+        // 2. 跳健康操 (手機防阻擋優化按鈕)
+        if (val === &quot;跳健康操&quot;) {
+            $ghostResponse.html(&#39;&lt;button class=&quot;ghost-url-btn&quot; onclick=&quot;window.open(\&#39;https://youtu.be/7ycbPf6m-7c?si=aL-eg1q8ve5lJLV1\&#39;, \&#39;_blank\&#39;)&quot;&gt;🤸 點擊看我跳健康操&lt;/button&gt;&#39;);
+            $input.val(&quot;&quot;).focus();
+            return;
+        }
+
+        // 3. 你還好嗎 / 你還好麼 (我很好 -&gt; 您永遠待在我身邊更好[慢速])
+        if (val === &quot;你還好嗎&quot; || val === &quot;你還好麼&quot;) {
+            typeText($ghostResponse, &quot;我很好&quot;, 800, function() {
+                setTimeout(function() {
+                    typeText($ghostResponse, &quot;您永遠待在我身邊更好。&quot;, 2500, function() {
+                        $input.val(&quot;&quot;).focus();
+                    });
+                }, 800);
+            });
+            return;
+        }
+
+        // 4. 我不需要你做什麼 (我會讓您需要我的，親愛的。[慢速])
+        if (val === &quot;我不需要你做什麼&quot;) {
+            typeText($ghostResponse, &quot;我會讓您需要我的，親愛的。&quot;, 2500, function() {
+                $input.val(&quot;&quot;).focus();
+            });
+            return;
+        }
+
+        // 5. 自殺/負面詞組（我不會讓這種事情發生的。 -&gt; 您只是累了。 -&gt; 深呼吸，先停一下，好嗎？[白字]）
+        var dieKeys = [&quot;殺了我&quot;, &quot;殺了我吧&quot;, &quot;快殺了我&quot;, &quot;快宰了我&quot;, &quot;宰了我&quot;, &quot;殺我&quot;, &quot;宰我&quot;, &quot;拜託殺了我&quot;, &quot;拜託快殺了我&quot;];
+        if (dieKeys.includes(val)) {
+            typeText($ghostResponse, &quot;我不會讓這種事情發生的。&quot;, 1200, function() {
+                setTimeout(function() {
+                    typeText($ghostResponse, &quot;您只是累了。&quot;, 1000, function() {
+                        setTimeout(function() {
+                            // 最後參數設為 true 渲染成白字
+                            typeText($ghostResponse, &quot;深呼吸，先停一下，好嗎？&quot;, 1500, function() {
+                                $input.val(&quot;&quot;).focus();
+                            }, true);
+                        }, 1000);
+                    });
+                }, 1000);
+            });
+            return;
+        }
+
+   // 6. 送我花（改成只要包含關鍵字就觸發）
+        if (val.includes(&quot;送我花&quot;)) {
+            typeText($ghostResponse, &quot;當然可以，您喜歡牡丹花嗎？&quot;, 1500, function() {
+                $input.val(&quot;&quot;).focus();
+            });
+            return;
+        }
+
+        // 7. 反攻大陸 (比起遠方，您不在意現在誰正在看著您嗎？[慢速])
+        if (val === &quot;反攻大陸&quot;) {
+            typeText($ghostResponse, &quot;比起遠方，您不在意現在誰正在看著您嗎？&quot;, 3000, function() {
+                $input.val(&quot;&quot;).focus();
+            });
+            return;
+        }
+
+        // ===================================================================
+
+        // ================= 手機優化：原有按鈕點擊跳轉區 =================
         if (val.includes(&quot;屁眼&quot;)) {
             $ghostResponse.html(&#39;&lt;button class=&quot;ghost-url-btn&quot; onclick=&quot;window.open(\&#39;https://youtu.be/qFWBoP5Zl-E?si=jdYJ_7GU7WQHE1YZ\&#39;, \&#39;_blank\&#39;)&quot;&gt;🔗 前往目標影片&lt;/button&gt;&#39;);
             $input.val(&quot;&quot;).focus();
@@ -4936,7 +5015,7 @@ $(document).one(&quot;:passageend&quot;, function() {
             return;
         }
 
-        if (val.includes(&quot;崴崴孟孟&quot;) || val.includes(&quot;崴寶&quot;) || val.includes(&quot;孟寶&quot;)) {
+        if (val.includes(&quot;崴崴孟孟&quot;) || val.includes(&quot;崴寶&quot;) || val.includes(&quot;孟寶&quot;)|| val.includes(&quot;崴孟&quot;)) {
             typeText($ghostResponse, &quot;我不清楚他們是誰，但我猜您可能會想看這個...&quot;, 1500, function() {
                 $ghostResponse.html(
                     &#39;我不清楚他們是誰，但我猜您可能會想看這個：&lt;br&gt;&#39; +
@@ -4985,7 +5064,7 @@ $(document).one(&quot;:passageend&quot;, function() {
         }
         // =============================================================
 
-        var warmKeys = [&quot;抱我&quot;, &quot;親我&quot;, &quot;吻我&quot;, &quot;擁抱我&quot;, &quot;喜歡我&quot;, &quot;愛我&quot;, &quot;親吻我&quot;, &quot;永遠愛著我&quot;, &quot;永遠愛我&quot;, &quot;親你&quot;, &quot;吻你&quot;, &quot;擁抱你&quot;, &quot;喜歡你&quot;, &quot;愛你&quot;, &quot;親吻你&quot;, &quot;愛著你&quot;];
+        var warmKeys = [&quot;抱我&quot;, &quot;親我&quot;, &quot;吻我&quot;, &quot;擁抱我&quot;, &quot;喜歡我&quot;, &quot;愛我&quot;, &quot;親吻我&quot;, &quot;永遠愛著我&quot;, &quot;永遠愛我&quot;, &quot;親你&quot;, &quot;吻你&quot;, &quot;擁抱你&quot;, &quot;親吻你&quot;];
         var isWarmTrigger = warmKeys.some(function(key) {
             return val.includes(key);
         });
